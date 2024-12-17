@@ -8,7 +8,7 @@ function ChecklistItem({ item, onDelete, onToggle }) {
             type="checkbox"
             checked={item.checked} 
             onChange={onToggle} 
-            className="mr-3 w-5 h-5 accent-purple-400"
+            className="mr-3 w-5 h-5 accent-green-200"
         />
         
         <span

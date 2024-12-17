@@ -3,9 +3,8 @@ import React, { useState } from 'react';
 import ChecklistItem from './components/ChecklistItem';
 
 function App() {
-
   const [checklist, setChecklist] = useState([]);
-  const [newItem, setNewItem] = useState(''); 
+  const [newItem, setNewItem] = useState('');
 
   const addItem = () => {
     if (newItem.trim()) {
@@ -41,24 +40,28 @@ function App() {
       ></div>
 
       <div className="container mx-auto text-center relative z-10 p-4">
-        <h1 className="text-5xl font-bold my-10 text-black">Check List</h1>
+        <h1 className="text-3xl custom-md:text-5xl font-bold my-6 text-black">
+          DoDay List
+        </h1>
 
-        <div className="flex justify-center mb-6">
+        <div className="flex flex-col custom-md:flex-row justify-center mb-6">
           <input
-            type="text"
-            value={newItem}
-            onChange={(e) => setNewItem(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && addItem()} 
-            placeholder="Add a new task..."
-            className="border rounded-lg p-2 w-1/3 focus:outline-none focus:ring-2 focus:ring-green-900 mr-2"
+          type="text"
+          value={newItem}
+          onChange={(e) => setNewItem(e.target.value)}
+          onKeyDown={(e) => e.key === 'Enter' && addItem()}
+          placeholder="Add a new task..."
+          className="border rounded-lg p-2 w-full custom-md:w-1/2 custom-md:max-xl focus:outline-none focus:ring-2 focus:ring-green-900 mb-2 custom-md:mb-0 custom-md:mr-2"
           />
+          
           <button
-            onClick={addItem}
-            className="bg-green-900 text-white w-10 h-10 flex items-center justify-center rounded-full hover:bg-green-700 shadow-md"
+          onClick={addItem}
+          className="bg-green-900 text-white w-10 h-10 flex items-center justify-center rounded-full hover:bg-green-700 shadow-md mx-auto custom-md:mx-0"
           >
             <span className="text-xl font-bold leading-none">+</span>
           </button>
-        </div>
+</div>
+
 
         <button
           onClick={checkAllItems}
@@ -67,18 +70,20 @@ function App() {
           Check All
         </button>
 
-        <ul className="bg-white shadow-md rounded-lg w-1/2 mx-auto p-4">
+        <ul className="bg-white shadow-md rounded-lg w-10/12 custom-md:w-2/3 mx-auto p-4">
           {checklist.length > 0 ? (
             checklist.map((item, index) => (
               <ChecklistItem
                 key={index}
                 item={item}
                 onDelete={() => deleteItem(index)}
-                onToggle={() => toggleItem(index)} 
+                onToggle={() => toggleItem(index)}
               />
             ))
           ) : (
-            <h2 className="text-2xl font-bold text-cyan-800">No tasks yet...</h2>
+            <h2 className="text-lg italic text-gray-300">
+              Which task will let you sleep like a baby tonight?
+            </h2>
           )}
         </ul>
       </div>
