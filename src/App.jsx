@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
+import { SlidersHorizontal, Plus} from 'lucide-react';
 import ChecklistItem from './components/ChecklistItem';
 
 function App() {
   const [checklist, setChecklist] = useState([]);
   const [newItem, setNewItem] = useState('');
   const [allChecked, setAllChecked] = useState(false);
+  const [currentFilter, setCurrentFilter] = useState('All');
+  const [filterDropdownOpen, setFilterDropdownOpen] = useState(false);
 
   const addItem = () => {
     if (newItem.trim()) {
@@ -27,63 +30,89 @@ function App() {
 
   const checkAllItems = () => {
     setChecklist(checklist.map((task) => ({ ...task, checked: !allChecked })));
-    setAllChecked(!allChecked); 
+    setAllChecked(!allChecked);
   };
+
+  const filteredChecklist = checklist.filter((item) => {
+    if (currentFilter === 'Active') return !item.checked;
+    if (currentFilter === 'Completed') return item.checked;
+    return true;
+  });
 
   return (
     <div className="relative min-h-screen">
       <div
         className="fixed top-0 left-0 w-full h-full bg-cover bg-center -z-10"
-        style={{
-          backgroundImage: "url('/Background.jpg')",
-        }}
+        style={{ backgroundImage: "url('/Background.jpg')" }}
       ></div>
 
-      <div className="container mx-auto text-center relative z-10 p-4">
-        <h1 className="text-3xl custom-md:text-5xl font-bold my-6 text-black">
-          DoDay List
-        </h1>
-
-        <div className="flex flex-col custom-md:flex-row justify-center mb-6">
+      <nav className="fixed top-0 left-0 w-full bg-white shadow-md z-20 p-4 flex justify-between items-center">
+        <img src="/public/Logo.png" alt="DoDay List Logo" className="h-10" />
+        <div className="flex items-center gap-2 w-full max-w-lg mx-auto">
           <input
             type="text"
             value={newItem}
             onChange={(e) => setNewItem(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && addItem()}
             placeholder="Add a new task..."
-            className="border rounded-lg p-2 w-full custom-md:w-1/2 custom-md:max-xl focus:outline-none focus:ring-2 focus:ring-green-900 mb-2 custom-md:mb-0 custom-md:mr-2"
+            className="border rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-green-900"
           />
-
           <button
             onClick={addItem}
-            className="bg-green-900 text-white w-10 h-10 flex items-center justify-center rounded-full hover:bg-green-700 shadow-md mx-auto custom-md:mx-0"
+            className="bg-green-900 text-white p-3 rounded-lg hover:bg-green-700 shadow-md"
+            aria-label="Add new task"
           >
-            <span className="text-xl font-bold leading-none">+</span>
+            <Plus size={20} />
           </button>
+          <div className="relative">
+            <button
+              onClick={() => setFilterDropdownOpen(!filterDropdownOpen)}
+              className="p-3 bg-gray-200 rounded-lg hover:bg-gray-300"
+              aria-label="Filter tasks"
+            >
+              <SlidersHorizontal size={20} />
+            </button>
+            {filterDropdownOpen && (
+              <div className="absolute right-0 mt-2 bg-white border rounded shadow-lg">
+                {['All', 'Active', 'Completed'].map((filter) => (
+                  <button
+                    key={filter}
+                    onClick={() => {
+                      setCurrentFilter(filter);
+                      setFilterDropdownOpen(false);
+                    }}
+                    className={`block px-4 py-2 text-sm w-full text-left hover:bg-gray-100 ${
+                      currentFilter === filter ? 'font-bold' : ''
+                    }`}
+                  >
+                    {filter}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
+      </nav>
 
+      <div className="container mx-auto text-center relative z-10 p-4 pt-24">
         <button
-        onClick={checkAllItems}
-        className={`py-2 px-4 rounded mb-6 hover:opacity-90 ${
-          allChecked
-          ? 'bg-purple-700 text-white' 
-          : 'bg-green-900 text-white'  
-  }`}
->
-  {allChecked ? 'Uncheck All' : 'Check All'}
-</button>
-
+          onClick={checkAllItems}
+          className={`py-2 px-4 rounded mb-6 hover:opacity-90 ${
+            allChecked ? 'bg-purple-700 text-white' : 'bg-green-900 text-white'
+          }`}
+        >
+          {allChecked ? 'Uncheck All' : 'Check All'}
+        </button>
 
         <ul className="bg-white shadow-md rounded-lg w-full custom-md:w-1/2 mx-auto p-4">
-        
-        {checklist.length > 0 ? (
-          checklist.map((item, index) => (
-          <ChecklistItem
-          key={index}
-          item={item}
-          onDelete={() => deleteItem(index)}
-          onToggle={() => toggleItem(index)}
-          />
+          {filteredChecklist.length > 0 ? (
+            filteredChecklist.map((item, index) => (
+              <ChecklistItem
+                key={index}
+                item={item}
+                onDelete={() => deleteItem(index)}
+                onToggle={() => toggleItem(index)}
+              />
             ))
           ) : (
             <h2 className="text-lg italic text-gray-300">
