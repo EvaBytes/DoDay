@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Pencil, Trash, MoreVertical } from "lucide-react"; 
+import { Pencil, Trash, MoreVertical, Check } from "lucide-react";
 import SidebarFooter from "./SidebarFooter"; 
 
 const Sidebar = ({sidebarOpen,lists,createNewList,setActiveListId,activeListId,deleteList,editList}) => {
@@ -54,10 +54,10 @@ const Sidebar = ({sidebarOpen,lists,createNewList,setActiveListId,activeListId,d
             {lists.map((list) => (
               <li
                 key={list.id}
-                className={`p-2 cursor-pointer flex justify-between items-center ${
+                className={`border rounded-lg p-2 cursor-pointer flex justify-between items-center ${
                   activeListId === list.id
-                    ? "bg-green-100 text-green-800"
-                    : "hover:bg-gray-100"
+                    ? "bg-green-100 text-green-800 border-none"
+                    : "hover:bg-gray-100 border-none"
                 }`}
                 onClick={() => setActiveListId(list.id)}
               >
@@ -72,9 +72,9 @@ const Sidebar = ({sidebarOpen,lists,createNewList,setActiveListId,activeListId,d
                     />
                     <button
                       onClick={() => handleSaveEdit(list.id)}
-                      className="p-1 bg-green-800 text-white rounded-lg hover:bg-green-900"
-                    >
-                      Guardar
+                      className="p-1 text-green-600 hover:text-green-900 transition-colors duration-200"
+                      >
+                      <Check size={20} />
                     </button>
                   </div>
                 ) : (
