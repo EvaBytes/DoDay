@@ -1,41 +1,115 @@
-import React, { useState } from 'react';
-import { SlidersHorizontal, Plus} from 'lucide-react';
-import ChecklistItem from './components/ChecklistItem';
+import React, { useState } from "react";
+import ChecklistItem from "./components/ChecklistItem";
+import Navbar from "./components/Navbar";
+import Sidebar from "./components/Sidebar";
 
 function App() {
-  const [checklist, setChecklist] = useState([]);
-  const [newItem, setNewItem] = useState('');
+  const [lists, setLists] = useState([
+    { id: 1, name: "Lista 1", tasks: [] }, 
+  ]);
+  const [activeListId, setActiveListId] = useState(1); 
+  const [newItem, setNewItem] = useState("");
   const [allChecked, setAllChecked] = useState(false);
-  const [currentFilter, setCurrentFilter] = useState('All');
+  const [currentFilter, setCurrentFilter] = useState("All");
   const [filterDropdownOpen, setFilterDropdownOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [editingTaskIndex, setEditingTaskIndex] = useState(null); 
+  const [editedTaskText, setEditedTaskText] = useState(""); 
+
+  const activeList = lists.find((list) => list.id === activeListId);
+  const checklist = activeList ? activeList.tasks : [];
+
+  const createNewList = () => {
+    const newListId = lists.length + 1; 
+    const newList = {
+      id: newListId,
+      name: `Lista ${newListId}`, 
+      tasks: [], 
+    };
+    setLists([...lists, newList]); 
+    setActiveListId(newListId); 
+  };
+
+  const deleteList = (listId) => {
+    const updatedLists = lists.filter((list) => list.id !== listId);
+    setLists(updatedLists);
+
+    if (activeListId === listId) {
+      setActiveListId(updatedLists[0]?.id || null);
+    }
+  };
+
+  const editList = (listId, newName) => {
+    const updatedLists = lists.map((list) =>
+      list.id === listId ? { ...list, name: newName } : list
+    );
+    setLists(updatedLists);
+  };
 
   const addItem = () => {
     if (newItem.trim()) {
-      setChecklist([...checklist, { text: newItem.trim(), checked: false }]);
-      setNewItem('');
+      const updatedLists = lists.map((list) =>
+        list.id === activeListId
+          ? { ...list, tasks: [...list.tasks, { text: newItem.trim(), checked: false }] }
+          : list
+      );
+      setLists(updatedLists);
+      setNewItem("");
     }
   };
 
   const deleteItem = (index) => {
-    setChecklist(checklist.filter((_, i) => i !== index));
+    const updatedLists = lists.map((list) =>
+      list.id === activeListId
+        ? { ...list, tasks: list.tasks.filter((_, i) => i !== index) }
+        : list
+    );
+    setLists(updatedLists);
   };
 
   const toggleItem = (index) => {
-    setChecklist(
-      checklist.map((task, i) =>
-        i === index ? { ...task, checked: !task.checked } : task
-      )
+    const updatedLists = lists.map((list) =>
+      list.id === activeListId
+        ? {
+            ...list,
+            tasks: list.tasks.map((task, i) =>
+              i === index ? { ...task, checked: !task.checked } : task
+            ),
+          }
+        : list
     );
+    setLists(updatedLists);
+  };
+
+  const editTask = (index, newText) => {
+    const updatedLists = lists.map((list) =>
+      list.id === activeListId
+        ? {
+            ...list,
+            tasks: list.tasks.map((task, i) =>
+              i === index ? { ...task, text: newText } : task
+            ),
+          }
+        : list
+    );
+    setLists(updatedLists);
+    setEditingTaskIndex(null); 
+    setEditedTaskText(""); 
   };
 
   const checkAllItems = () => {
-    setChecklist(checklist.map((task) => ({ ...task, checked: !allChecked })));
+    const updatedLists = lists.map((list) =>
+      list.id === activeListId
+        ? { ...list, tasks: list.tasks.map((task) => ({ ...task, checked: !allChecked })) }
+        : list
+    );
+    setLists(updatedLists);
     setAllChecked(!allChecked);
   };
 
   const filteredChecklist = checklist.filter((item) => {
-    if (currentFilter === 'Active') return !item.checked;
-    if (currentFilter === 'Completed') return item.checked;
+    if (currentFilter === "Active") return !item.checked;
+    if (currentFilter === "Completed") return item.checked;
     return true;
   });
 
@@ -46,64 +120,41 @@ function App() {
         style={{ backgroundImage: "url('/Background1.png')" }}
       ></div>
 
-      <nav className="fixed top-0 left-0 w-full bg-white shadow-md z-20 p-4 flex justify-between items-center">
-        <img src="/Logo.png" alt="DoDay List Logo" className="h-10" />
-        <div className="flex items-center gap-2 w-full max-w-lg mx-auto">
-          <input
-            type="text"
-            value={newItem}
-            onChange={(e) => setNewItem(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && addItem()}
-            placeholder="Add a new task..."
-            className="border rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-green-900"
-          />
-          <button
-            onClick={addItem}
-            className=" bg-green-800 text-white p-3 rounded-lg hover:bg-green-900 shadow-md"
-            aria-label="Add new task"
-          >
-            <Plus size={20} />
-          </button>
+      <Navbar
+        toggleSidebar={() => setSidebarOpen(!sidebarOpen)}
+        sidebarOpen={sidebarOpen}
+        newItem={newItem}
+        setNewItem={setNewItem}
+        addItem={addItem}
+        filterDropdownOpen={filterDropdownOpen}
+        setFilterDropdownOpen={setFilterDropdownOpen}
+        currentFilter={currentFilter}
+        setCurrentFilter={setCurrentFilter}
+      />
 
-          <div className="relative">
-            <button
-              onClick={() => setFilterDropdownOpen(!filterDropdownOpen)}
-              className="p-3 bg-gray-200 rounded-lg hover:bg-gray-300"
-              aria-label="Filter tasks"
-            >
-              <SlidersHorizontal size={20} />
-            </button>
-            {filterDropdownOpen && (
-              <div className="absolute right-0 mt-2 bg-white border rounded shadow-lg">
-                {['All', 'Active', 'Completed'].map((filter) => (
-                  <button
-                    key={filter}
-                    onClick={() => {
-                      setCurrentFilter(filter);
-                      setFilterDropdownOpen(false);
-                    }}
-                    className={`block px-4 py-2 text-sm w-full text-left hover:bg-gray-100 ${
-                      currentFilter === filter ? 'font-bold' : ''
-                    }`}
-                  >
-                    {filter}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-      </nav>
+      <Sidebar
+        sidebarOpen={sidebarOpen}
+        lists={lists}
+        createNewList={createNewList}
+        setActiveListId={setActiveListId}
+        activeListId={activeListId}
+        deleteList={deleteList}
+        editList={editList}
+      />
 
-      <div className="container mx-auto text-center relative z-10 p-4 pt-24">
-      <button
-        onClick={checkAllItems}
-        className={`py-2 px-4 rounded mb-6 hover:opacity-90 ${
-          allChecked ? 'bg-purple-700 text-white' : 'bg-green-800 text-white'
+      <div
+        className={`container mx-auto text-center relative z-10 p-4 pt-24 transition-all duration-300 ${
+          sidebarOpen ? "pl-[20%]" : "pl-0"
         }`}
       >
-        {allChecked ? 'Uncheck All' : 'Check All'}
-      </button>
+        <button
+          onClick={checkAllItems}
+          className={`py-2 px-4 rounded mb-6 hover:opacity-90 ${
+            allChecked ? "bg-purple-700 text-white" : "bg-green-800 text-white"
+          }`}
+        >
+          {allChecked ? "Uncheck All" : "Check All"}
+        </button>
 
         <ul className="bg-white shadow-md rounded-lg w-full custom-md:w-1/2 mx-auto p-4">
           {filteredChecklist.length > 0 ? (
@@ -113,6 +164,14 @@ function App() {
                 item={item}
                 onDelete={() => deleteItem(index)}
                 onToggle={() => toggleItem(index)}
+                onEdit={() => {
+                  setEditingTaskIndex(index); 
+                  setEditedTaskText(item.text); 
+                }}
+                isEditing={editingTaskIndex === index} 
+                editedTaskText={editedTaskText} 
+                setEditedTaskText={setEditedTaskText}
+                saveEdit={() => editTask(index, editedTaskText)} 
               />
             ))
           ) : (
