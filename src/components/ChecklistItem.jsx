@@ -23,7 +23,7 @@ function ChecklistItem({ item, onDelete, onToggle, onEdit }) {
             <div className="flex space-x-2">
                 <button
                     onClick={onEdit}
-                    className="p-2 bg-blue-500 rounded-full hover:bg-blue-600 transition shadow-md active:scale-95"
+                    className="p-2 bg-green-500 rounded-full hover:bg-green-600 transition shadow-md active:scale-95"
                     aria-label="Edit task"
                 >
                     <Pencil size={18} color="#fff" />

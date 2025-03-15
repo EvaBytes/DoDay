@@ -5,10 +5,14 @@ export default {
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
-    extend: {      screens: {
-      'custom-md': '700px', 
-    },},
+    extend: {
+      screens: {
+        'custom-md': '700px',
+      },
+      fontFamily: {
+        poppins: ['Poppins', 'sans-serif'],
+      },
+    },
   },
   plugins: [],
 }
-

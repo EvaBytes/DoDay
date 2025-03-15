@@ -43,11 +43,11 @@ function App() {
     <div className="relative min-h-screen">
       <div
         className="fixed top-0 left-0 w-full h-full bg-cover bg-center -z-10"
-        style={{ backgroundImage: "url('/Background.jpg')" }}
+        style={{ backgroundImage: "url('/Background1.png')" }}
       ></div>
 
       <nav className="fixed top-0 left-0 w-full bg-white shadow-md z-20 p-4 flex justify-between items-center">
-        <img src="/public/Logo.png" alt="DoDay List Logo" className="h-10" />
+        <img src="/Logo.png" alt="DoDay List Logo" className="h-10" />
         <div className="flex items-center gap-2 w-full max-w-lg mx-auto">
           <input
             type="text"
@@ -59,11 +59,12 @@ function App() {
           />
           <button
             onClick={addItem}
-            className="bg-green-900 text-white p-3 rounded-lg hover:bg-green-700 shadow-md"
+            className=" bg-green-800 text-white p-3 rounded-lg hover:bg-green-900 shadow-md"
             aria-label="Add new task"
           >
             <Plus size={20} />
           </button>
+
           <div className="relative">
             <button
               onClick={() => setFilterDropdownOpen(!filterDropdownOpen)}
@@ -95,14 +96,14 @@ function App() {
       </nav>
 
       <div className="container mx-auto text-center relative z-10 p-4 pt-24">
-        <button
-          onClick={checkAllItems}
-          className={`py-2 px-4 rounded mb-6 hover:opacity-90 ${
-            allChecked ? 'bg-purple-700 text-white' : 'bg-green-900 text-white'
-          }`}
-        >
-          {allChecked ? 'Uncheck All' : 'Check All'}
-        </button>
+      <button
+        onClick={checkAllItems}
+        className={`py-2 px-4 rounded mb-6 hover:opacity-90 ${
+          allChecked ? 'bg-purple-700 text-white' : 'bg-green-800 text-white'
+        }`}
+      >
+        {allChecked ? 'Uncheck All' : 'Check All'}
+      </button>
 
         <ul className="bg-white shadow-md rounded-lg w-full custom-md:w-1/2 mx-auto p-4">
           {filteredChecklist.length > 0 ? (
