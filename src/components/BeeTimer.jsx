@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import { PlayIcon, PauseIcon, ArrowPathIcon } from "@heroicons/react/24/outline";
 import { motion, useAnimation } from "framer-motion";
-import Swal from "sweetalert2"; // Import SweetAlert2
-import withReactContent from "sweetalert2-react-content"; // Import the React plugin
-import confetti from "canvas-confetti"; // Import confetti directly
+import Swal from "sweetalert2"; 
+import withReactContent from "sweetalert2-react-content"; 
+import confetti from "canvas-confetti"; 
 
-const MySwal = withReactContent(Swal); // Create a SweetAlert2 instance with React support
+const MySwal = withReactContent(Swal); 
 
 const BeeTimer = () => {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -111,7 +111,6 @@ const BeeTimer = () => {
           controls.stop();
           controls.set({ x: "-100%" });
 
-          // Show a SweetAlert2 popup with confetti
           MySwal.fire({
             title: "Time is up!",
             text: "Wanna start again?",
@@ -121,10 +120,10 @@ const BeeTimer = () => {
               popup: "animate__animated animate__fadeInDown", // Entry animation
             },
             hideClass: {
-              popup: "animate__animated animate__fadeOutUp", // Exit animation
+              popup: "animate__animated animate__fadeOutUp", 
             },
             didOpen: () => {
-              // Trigger confetti
+              
               confetti({
                 particleCount: 100,
                 spread: 70,
