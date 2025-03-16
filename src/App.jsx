@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import ChecklistItem from "./components/ChecklistItem";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
+import CrabTimer from "./components/CrabTimer";
 
 function App() {
   const [lists, setLists] = useState([
@@ -181,6 +182,8 @@ function App() {
           )}
         </ul>
       </div>
+      <CrabTimer />
+
     </div>
   );
 }
