@@ -26,37 +26,49 @@ const CrabTimer = () => {
         <motion.div
           className="absolute"
           animate={{
-            x: ["0", "calc(-60vw - 100px)", "0"], 
+            x: ["0", "calc(-60vw - 100px)", "0"], // Movimiento de izquierda a derecha
           }}
           transition={{
-            duration: 30, 
-            repeat: Infinity, 
-            repeatType: "loop", 
+            duration: 30,
+            repeat: Infinity,
+            repeatType: "loop",
+            ease: "linear",
           }}
           style={{
-            height: "100px", 
+            height: "100px",
             width: "100px",
-            top: "0", 
+            top: "0",
           }}
         >
-          <Player
-            autoplay
-            loop
-            src="public/Crab.json"
-            style={{ height: "100%", width: "100%" }}
-          />
+          <motion.div
+            animate={{
+              rotate: [0, 180], 
+            }}
+            transition={{
+              duration: 0, 
+              repeat: Infinity,
+              repeatType: "loop",
+            }}
+          >
+            <Player
+              autoplay
+              loop
+              src="public/Bee.json"
+              style={{ height: "100%", width: "100%" }}
+            />
+          </motion.div>
         </motion.div>
 
         <CountdownCircleTimer
           key={key}
           isPlaying={isPlaying}
           duration={duration}
-          size={120} 
+          size={120}
           strokeWidth={6}
           onComplete={() => setIsPlaying(false)}
           colors={["#006400", "#228B22", "#32CD32"]}
           colorsTime={[duration, duration / 2, 0]}
-          trailColor="rgba(144, 238, 144, 0.2)"        
+          trailColor="rgba(144, 238, 144, 0.2)"
         >
           {({ remainingTime }) => (
             <div
