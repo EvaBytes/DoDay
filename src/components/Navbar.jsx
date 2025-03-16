@@ -51,7 +51,7 @@ const Navbar = ({toggleSidebar,sidebarOpen,newItem,setNewItem,addItem,filterDrop
                     setFilterDropdownOpen(false);
                   }}
                   className={`block px-4 py-2 text-sm w-full text-left hover:bg-gray-100 ${
-                    currentFilter === filter ? "font-bold" : ""
+                    currentFilter === filter ? "bold" : ""
                   }`}
                 >
                   {filter}

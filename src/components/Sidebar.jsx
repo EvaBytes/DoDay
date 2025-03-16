@@ -40,15 +40,21 @@ const Sidebar = ({sidebarOpen,lists,createNewList,setActiveListId,activeListId,d
           className="w-[20%] bg-white shadow-md h-screen fixed z-20 p-4 flex flex-col" 
           style={{ left: 0 }}
         >
-          <div>
-            <img src="/Logo.png" alt="DoDay List Logo" className="h-10 mb-4" />
-            <button
-              onClick={createNewList}
-              className="w-full bg-green-800 text-white p-2 rounded-lg hover:bg-green-900 shadow-md mb-4"
-            >
-              Create New List
-            </button>
+        <div className="w-full"> 
+          <div className="flex justify-center">
+            <img
+              src="/Logo.png"
+              alt="DoDay List Logo"
+              className="h-10 mb-4" 
+            />
           </div>
+          <button
+            onClick={createNewList}
+            className="w-full bg-green-800 text-white p-2 rounded-lg hover:bg-green-900 shadow-md mb-4"
+          >
+            Create New List
+          </button>
+        </div>
 
           <ul className="flex-1 overflow-y-auto">
             {lists.map((list) => (

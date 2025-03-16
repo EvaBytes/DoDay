@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import ChecklistItem from "./components/ChecklistItem";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
-import CrabTimer from "./components/CrabTimer";
+import BeeTimer from "./components/BeeTimer";
 
 function App() {
   const [lists, setLists] = useState([
-    { id: 1, name: "Lista 1", tasks: [] }, 
+    { id: 1, name: "Track 1", tasks: [] }, 
   ]);
   const [activeListId, setActiveListId] = useState(1); 
   const [newItem, setNewItem] = useState("");
@@ -24,7 +24,7 @@ function App() {
     const newListId = lists.length + 1; 
     const newList = {
       id: newListId,
-      name: `Lista ${newListId}`, 
+      name: `Track ${newListId}`, 
       tasks: [], 
     };
     setLists([...lists, newList]); 
@@ -182,7 +182,7 @@ function App() {
           )}
         </ul>
       </div>
-      <CrabTimer />
+      <BeeTimer />
 
     </div>
   );
